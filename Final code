@@ -1,0 +1,1051 @@
+#Install relevant packages
+install.packages(c("robumeta", "metafor", "dplyr"))
+install.packages("meta")
+install.packages("dmetar")
+install.packages("readxl")
+#into library load
+library("robumeta")
+library("metafor")
+library("dplyr")
+library("mada")
+library("meta")
+library("dmetar")
+library("readxl")
+
+#install updated packaged for Rtools required now (2022)
+write('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', file = "~/.Renviron", append = TRUE)
+Sys.which("make")
+## "C:\\rtools40\\usr\\bin\\make.exe"
+install.packages("jsonlite", type = "source")
+
+#Install relevant packages
+install.packages(c("robumeta", "metafor", "dplyr"))
+install.packages("meta")
+install.packages("devtools")
+
+
+install.packages("readxl")
+install.packages("devtools") 
+install_github("mcguinlu/robvis") 
+install.packages("robvis") 
+install.packages("utf8") 
+
+
+
+#into library load
+library("robumeta")
+library("metafor")
+library("dplyr")
+library("mada")
+library("meta")
+library("dmetar")
+library("readxl")
+library("robvis") 
+library("utf8") 
+
+
+#ROB analysis
+#loading excel sheet 
+
+NPHBio_Risk_of_bias_NR <- read_excel("~/Desktop/Radiological NPH ROB NEW.xlsx") 
+
+NPHBio_Risk_of_bias_NR 
+
+
+
+#running Risk of bias analysis 
+
+
+
+rob_summary(NPHBio_Risk_of_bias_NR, tool = "ROBINS-I", weighted = FALSE , overall = TRUE) 
+
+
+######################## DESH ########################################
+
+
+
+
+#load Excel file
+
+library(readxl)
+DOR_DESH_NEW <- read_excel("Desktop/iNPH Radio New/Relevant stuff/Tables/DESH/DESH NEW.xlsx")
+
+
+
+
+#meta-analysis
+meta_Radio_DESH_NEW <- metagen(TE = DOR_DESH_NEW$TE,
+                               seTE = DOR_DESH_NEW$seTE,
+                               studlab = DOR_DESH_NEW$Author,
+                               title = "DESH",
+                               data = DOR_DESH_NEW,
+                               sm = "",
+                               fixed = FALSE,
+                               random = TRUE,
+                               method.tau = "DL",
+                               lower = DOR_DESH_NEW$lower,
+                               upper = DOR_DESH_NEW$upper,
+                               pval = DOR_DESH_NEW$pval,
+                               hakn = TRUE,
+                               n.e = DOR_DESH_NEW$Sample,
+                               text.random = "Pooled Odds Ratio",
+                               label.e = "",
+                               prediction = TRUE, 
+                               backtransf = TRUE)
+
+forest.meta(meta_Radio_DESH_NEW,
+            lab.e = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE)
+
+
+
+#DESH analysis 2 for heterogeneity 
+
+library(readxl)
+DOR_DESH_NEW2 <- read_excel("Desktop/iNPH Radio New/Relevant stuff/Tables/DESH/DESH NEW 2.xlsx")
+
+
+
+
+#meta-analysis
+meta_Radio_DESH_NEW2 <- metagen(TE = DOR_DESH_NEW2$TE,
+                               seTE = DOR_DESH_NEW2$seTE,
+                               studlab = DOR_DESH_NEW2$Author,
+                               title = "DESH",
+                               data = DOR_DESH_NEW2,
+                               sm = "",
+                               fixed = FALSE,
+                               random = TRUE,
+                               method.tau = "DL",
+                               lower = DOR_DESH_NEW2$lower,
+                               upper = DOR_DESH_NEW2$upper,
+                               pval = DOR_DESH_NEW2$pval,
+                               hakn = TRUE,
+                               n.e = DOR_DESH_NEW2$Sample,
+                               text.random = "Pooled Odds Ratio",
+                               label.e = "",
+                               prediction = TRUE, 
+                               backtransf = TRUE)
+
+forest.meta(meta_Radio_DESH_NEW2,
+            lab.e = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE)
+#meta-regression for DESH metareg: only if studies >3, single ones (all)
+
+meta_Radio_DESH_Sample<- metareg(meta_Radio_DESH_NEW,
+                                ~ Sample)
+print(meta_Radio_DESH_Sample)
+
+
+meta_Radio_DESH_Year<- metareg(meta_Radio_DESH_NEW,
+                                 ~ Year)
+print(meta_Radio_DESH_Year)
+
+
+meta_Radio_DESH_Age <- metareg(meta_Radio_DESH_NEW,
+                            ~ Age)
+print(meta_Radio_DESH_Age)
+
+
+#note females is significant regression factor!
+meta_Radio_DESH_Females <- metareg(meta_Radio_DESH_NEW,
+                               ~ Females)
+print(meta_Radio_DESH_Females)
+
+
+meta_Radio_DESH_HTN <- metareg(meta_Radio_DESH_NEW,
+                              ~ HTN)
+print(meta_Radio_DESH_HTN)
+
+
+meta_Radio_DESH_Gait<- metareg(meta_Radio_DESH_NEW,
+                               ~ Gait)
+print(meta_Radio_DESH_Gait)
+
+
+meta_Radio_DESH_mRS<- metareg(meta_Radio_DESH_NEW,
+                           ~ mRS)
+print(meta_Radio_DESH_mRS)
+
+
+meta_Radio_DESH_EI<- metareg(meta_Radio_DESH_NEW,
+                              ~ EI)
+print(meta_Radio_DESH_EI)
+
+meta_Radio_DESH_CA<- metareg(meta_Radio_DESH_NEW,
+                             ~ CA)
+print(meta_Radio_DESH_CA)
+
+#DESH is significant regression factor!
+meta_Radio_DESH_DESH<- metareg(meta_Radio_DESH_NEW,
+                             ~ DESH)
+print(meta_Radio_DESH_DESH)
+
+
+meta_Radio_DESH_SR<- metareg(meta_Radio_DESH_NEW,
+                               ~ SR)
+print(meta_Radio_DESH_SR)
+
+
+meta_Radio_DESH_Comp <- metareg(meta_Radio_DESH_NEW,
+                             ~ Complic.)
+print(meta_Radio_DESH_Comp)
+
+
+meta_Radio_DESH_Comp <- metareg(meta_Radio_DESH_NEW,
+                                ~ Complic. + DESH + SR + CA + EI + mRS + Gait + HTN)
+print(meta_Radio_DESH_Comp)
+
+
+#categorical variables: imaging plane and modality
+
+
+meta_Radio_DESH_Imagingplane <- metareg(meta_Radio_DESH_NEW,
+                                        ~ 0 + factor(Imagingplane))
+print(meta_Radio_DESH_Imagingplane)
+
+
+meta_Radio_DESH_Imagingmodality <- metareg(meta_Radio_DESH_NEW,
+                                        ~ 0 + factor(Imagingmodality))
+print(meta_Radio_DESH_Imagingmodality)
+
+
+######################## Periventricular WM ########################################
+
+
+
+
+#load Excel file
+
+library(readxl)
+DOR_PVWM_NEW <- read_excel("Desktop/iNPH Radio New/Relevant stuff/Tables/PVWM/Periventricular WM NEW.xlsx")
+
+
+
+
+#meta-analysis
+meta_Radio_PVWM_NEW <- metagen(TE = DOR_PVWM_NEW$TE,
+                               seTE = DOR_PVWM_NEW$seTE,
+                               studlab = DOR_PVWM_NEW$Author,
+                               title = "DESH",
+                               data = DOR_PVWM_NEW,
+                               sm = "",
+                               fixed = FALSE,
+                               random = TRUE,
+                               method.tau = "DL",
+                               lower = DOR_PVWM_NEW$lower,
+                               upper = DOR_PVWM_NEW$upper,
+                               pval = DOR_PVWM_NEW$pval,
+                               hakn = TRUE,
+                               n.e = DOR_PVWM_NEW$Sample,
+                               text.random = "Pooled Odds Ratio",
+                               label.e = "",
+                               prediction = TRUE)
+
+forest.meta(meta_Radio_PVWM_NEW,
+            label.e = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE)
+
+
+
+meta_Radio_PVWM_Sample <- metareg(meta_Radio_PVWM_NEW,
+                                 ~ Sample)
+print(meta_Radio_PVWM_Sample)
+
+
+meta_Radio_PVWM_Age <- metareg(meta_Radio_PVWM_NEW,
+                               ~ Age)
+print(meta_Radio_PVWM_Age)
+
+
+
+meta_Radio_PVWM_Females <- metareg(meta_Radio_PVWM_NEW,
+                                   ~ Females)
+print(meta_Radio_PVWM_Females)
+
+
+
+meta_Radio_PVWM_HTN <- metareg(meta_Radio_PVWM_NEW,
+                               ~ HTN)
+print(meta_Radio_PVWM_HTN)
+
+
+meta_Radio_PVWM_Gait <- metareg(meta_Radio_PVWM_NEW,
+                               ~ Gait)
+print(meta_Radio_PVWM_Gait)
+
+
+meta_Radio_PVWM_SR <- metareg(meta_Radio_PVWM_NEW,
+                                ~ SR)
+print(meta_Radio_PVWM_SR)
+
+
+
+meta_Radio_PVWM_Comp <- metareg(meta_Radio_PVWM_NEW,
+                                ~ Complic.)
+print(meta_Radio_PVWM_Comp)
+
+
+meta_Radio_PVWM_Year <- metareg(meta_Radio_PVWM_NEW,
+                                ~ Year)
+print(meta_Radio_PVWM_Year)
+
+#categorical variables: imaging plane and modality
+
+
+meta_Radio_PVWM_Imagingplane <- metareg(meta_Radio_PVWM_NEW,
+                                        ~ 0 + factor(Imagingplane))
+print(meta_Radio_PVWM_Imagingplane)
+
+
+meta_Radio_DESH_Imagingmodality <- metareg(meta_Radio_DESH_NEW,
+                                           ~ 0 + factor(Imagingmodality))
+print(meta_Radio_DESH_Imagingmodality)
+
+
+
+######################## Callosal Angle ########################################
+
+
+
+
+#load Excel file
+
+library(readxl)
+DOR_CA_NEW <- read_excel("Desktop/iNPH Radio New/Relevant stuff/Tables/Callosal Angle/CA NEW.xlsx")
+
+
+
+#meta-analysis
+meta_Radio_CA_NEW <- metagen(TE = DOR_CA_NEW$TE,
+                             seTE = DOR_CA_NEW$seTE,
+                             studlab = DOR_CA_NEW$Author,
+                             title = "DESH",
+                             data = DOR_CA_NEW,
+                             sm = "",
+                             fixed = FALSE,
+                             random = TRUE,
+                             method.tau = "DL",
+                             lower = DOR_CA_NEW$lower,
+                             upper = DOR_CA_NEW$upper,
+                             pval = DOR_CA_NEW$pval,
+                             hakn = TRUE,
+                             n.e = DOR_CA_NEW$Sample,
+                             text.random = "Pooled Odds Ratio",
+                             label.e = "",
+                             prediction = TRUE)
+
+forest.meta(meta_Radio_CA_NEW,
+            lab.e = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE)
+
+
+#regression
+
+meta_Radio_CA_Sample <- metareg(meta_Radio_CA_NEW,
+                                  ~ Sample)
+print(meta_Radio_CA_Sample)
+
+
+meta_Radio_CA_Age <- metareg(meta_Radio_CA_NEW,
+                               ~ Age)
+print(meta_Radio_CA_Age)
+
+
+
+meta_Radio_CA_Females <- metareg(meta_Radio_CA_NEW,
+                                   ~ Females)
+print(meta_Radio_CA_Females)
+
+
+
+meta_Radio_CA_HTN <- metareg(meta_Radio_CA_NEW,
+                               ~ HTN)
+print(meta_Radio_CA_HTN)
+
+
+meta_Radio_CA_Depression <- metareg(meta_Radio_CA_NEW,
+                              ~ Depression)
+print(meta_Radio_CA_Depression)
+
+meta_Radio_CA_Gait <- metareg(meta_Radio_CA_NEW,
+                                ~ Gait)
+print(meta_Radio_CA_Gait)
+
+
+meta_Radio_CA_CA <- metareg(meta_Radio_CA_NEW,
+                              ~ CA)
+print(meta_Radio_CA_CA)
+
+
+
+meta_Radio_CA_SR <- metareg(meta_Radio_CA_NEW,
+                            ~ SR)
+print(meta_Radio_CA_SR)
+
+
+meta_Radio_CA_SR <- metareg(meta_Radio_CA_NEW,
+                            ~ Year)
+print(meta_Radio_CA_SR)
+
+
+
+#categorical variables: imaging plane and modality
+
+
+meta_Radio_CA_Imagingplane <- metareg(meta_Radio_CA_NEW,
+                                        ~ imagingplane)
+print(meta_Radio_CA_Imagingplane)
+
+
+meta_Radio_CA_Imagingmodality <- metareg(meta_Radio_CA_NEW,
+                                           ~ 0 + factor(imagingmodality))
+print(meta_Radio_CA_Imagingmodality)
+
+######################## CBF ########################################
+
+#load Excel file
+
+library(readxl)
+DOR_CBF_NEW <- read_excel("Desktop/iNPH Radio New/Relevant stuff/Tables/Cerebral blood flow/Cerebral blood flow NEW1 .xlsx")
+
+
+
+
+#meta-analysis
+meta_Radio_CBF_NEW <- metagen(TE = DOR_CBF_NEW$TE,
+                              seTE = DOR_CBF_NEW$seTE,
+                              studlab = DOR_CBF_NEW$Author,
+                              title = "CBF",
+                              data = DOR_CBF_NEW,
+                              sm = "",
+                              fixed = FALSE,
+                              random = TRUE,
+                              method.tau = "DL",
+                              lower = DOR_CBF_NEW$lower,
+                              upper = DOR_CBF_NEW$upper,
+                              pval = DOR_CBF_NEW$pval,
+                              hakn = TRUE,
+                              n.e = DOR_CBF_NEW$Sample,
+                              text.random = "Pooled Odds Ratio",
+                              label.e = "",
+                              prediction = TRUE)
+
+forest.meta(meta_Radio_CBF_NEW,
+            label.e = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE)
+
+
+
+#regression
+
+meta_Radio_CBF_Sample <- metareg(meta_Radio_CBF_NEW,
+                                ~ Sample)
+print(meta_Radio_CBF_Sample)
+
+
+
+meta_Radio_CBF_Age <- metareg(meta_Radio_CBF_NEW,
+                                 ~ Age)
+print(meta_Radio_CBF_Age)
+
+
+
+
+meta_Radio_CBF_Females <- metareg(meta_Radio_CBF_NEW,
+                                 ~ Females)
+print(meta_Radio_CBF_Females)
+
+
+
+meta_Radio_CBF_MMSE <- metareg(meta_Radio_CBF_NEW,
+                             ~ MMSE)
+print(meta_Radio_CBF_MMSE)
+
+
+meta_Radio_CBF_SR <- metareg(meta_Radio_CBF_NEW,
+                               ~ SR)
+print(meta_Radio_CBF_SR)
+
+
+meta_Radio_CBF_Year <- metareg(meta_Radio_CBF_NEW,
+                                 ~ Year)
+print(meta_Radio_CBF_Year)
+
+
+
+#categorical variables: imaging plane and modality
+
+
+meta_Radio_CBF_Imagingplane <- metareg(meta_Radio_CBF_NEW,
+                                      ~ Imagingplane)
+print(meta_Radio_CBF_Imagingplane)
+
+
+meta_Radio_CBF_Imagingmodality <- metareg(meta_Radio_CBF_NEW,
+                                         ~ 0 + factor(imagingmodality))
+print(meta_Radio_CBF_Imagingmodality)
+
+######################## CTC ########################################
+
+#load Excel file
+
+library(readxl)
+DOR_CTC_NEW <- read_excel("Desktop/iNPH Radio New/Tables/CTC/CTC NEW.xlsx")
+View(DOR_CTC_NEW)
+
+
+
+#meta-analysis
+meta_Radio_CTC_NEW <- metagen(TE = DOR_CTC_NEW$TE,
+                              seTE = DOR_CTC_NEW$seTE,
+                              studlab = DOR_CTC_NEW$Author,
+                              title = "CTC",
+                              data = DOR_CTC_NEW,
+                              sm = "",
+                              fixed = FALSE,
+                              random = TRUE,
+                              method.tau = "DL",
+                              lower = c(0.250,
+                                        0.046,
+                                        0.911),
+                              upper = DOR_CTC_NEW$upper,
+                              pval = DOR_CTC_NEW$pval,
+                              hakn = TRUE,
+                              n.e = DOR_CTC_NEW$Sample,
+                              text.random = "Pooled Odds Ratio",
+                              label.e = "",
+                              prediction = TRUE)
+
+forest.meta(meta_Radio_CTC_NEW,
+            lab.e = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE)
+
+
+
+
+
+
+####################### Study characteristics graphs ##################
+
+library(readxl)
+Heatmap <- read_excel("Desktop/iNPH Radio New/Tables/Qualitative graphs/Heatmap.xlsx")
+View(Heatmap)
+
+
+####### 1. Make bar plot for study design
+
+studydesigntable <- table(Heatmap$`Study design`)
+
+# Load ggplot2
+library(ggplot2)
+
+# Create data
+
+
+data1 <- data.frame(
+  name=c("Prospective", "Retrospective") ,  
+  value=c(19, 9)
+)
+
+
+
+
+barplot(height = data1$value,
+        names.arg = data1$name,
+        xlab = "Study design",
+        ylab = "Number of studies",
+        ylim = c(0,20), xpd = TRUE,
+        col="black", angle = c(45, 90), density = c(10,30))
+
+
+
+
+###### 2. Make bar plot for study sample size
+
+library(readxl)
+Heatmap_Final_April_ <- read_excel("Desktop/iNPH Radio New/Tables/Heatmap Final April .xlsx")
+View(Heatmap_Final_April_)
+
+data2 <- data.frame(
+  name=Heatmap_Final_April_$Number,  
+  value=Heatmap_Final_April_$Sample
+)
+
+barplot(height = data2$value,
+        names.arg = data2$name,
+        xlab = "Study",
+        ylab = "Sample size",
+        ylim = c(0, 200),
+        col = "black",
+        xpd = TRUE)
+
+
+
+###### 3. Make bar plot for study year
+
+
+studysamplesizetable <- table(Heatmap$date)
+
+data3 <- data.frame(
+  name=c("1980", "2002", "2004", "2005", "2006", "2007", "2008",
+         "2011", "2013",  "2014",  "2016","2017", "2018", "2019", "2020", "2021"),  
+  value=c( 1,1,1,1,1,1,1,3,
+           3,3,2,1,2,2,3,2) 
+ )
+
+
+barplot(height = data3$value,
+        names.arg = data3$name,
+        xlab = "Year of study publication",
+        ylab = "Number of studies",
+        col = "black",
+        ylim = NULL, xpd = TRUE)
+
+
+
+library(RColorBrewer)
+coul3 <- brewer.pal(9, "Spectral") 
+
+####################### Imaging characteristics graphs ##################
+
+#Imaging modality
+
+studyradiotable <- table(Heatmap$`Imaging modality`)
+
+data4 <- data.frame(
+  name=c( "1.5T MRI", "1.5T or 0.5T MRI", "3T MRI",
+                    "0.5-3T MRI", "Undefined MRI", "CTC",
+                    "CT or MRI", "SPECT", "PEG"),
+  value=c(8, 1,5,2,1,2,4,2,3)
+)
+
+library(RColorBrewer)
+coul <- brewer.pal(11, "PiYG") 
+
+
+barplot(height = data4$value,
+        names.arg = data4$name,
+        xlab = "Imaging modality",
+        ylab = "Number of studies",
+        col = c("palegreen", "seagreen1", "seagreen2", "seagreen3", "seagreen4",
+                "slateblue1", "plum2", "blue", "salmon"),
+        ylim = NULL, xpd = TRUE)
+
+
+####################### Patient characteristics: Percentage ##################
+
+# Mean patient  characteristics in percentages 
+data5 <- data.frame(
+  name=c("Female","HTN", "DM", "Cognition-","Urine-", "HTriad+", "S-R", "Complic."),
+value=c(0.418, 0.503, 0.279, 0.766, 0.666, 0.663, 0.736, 0.126))
+
+library(RColorBrewer)
+
+coul <- brewer.pal(7, "OrRd") 
+
+
+barplot(height = data5$value,
+        names.arg = data5$name,
+        xlab = "Patient characteristics",
+        ylab = "Mean proportion",
+        col = coul,
+        ylim = c(0,1), xpd = TRUE)
+
+
+# Mean clinical score absolute values
+
+coul2 <- brewer.pal(5, "Greens") 
+
+data6 <- data.frame( 
+  name=c("MMSE", "EI", "mRS", "TUG",
+         "CA"),
+value=c(21.9, 0.4, 2.4, 19.7, 
+        76.6))
+
+
+
+bp <- barplot(height = data6$value,
+        names.arg = data6$name,
+        xlab = "Patient characteristics",
+        ylab = "Mean bsolute values",
+        col = coul2, 
+        ylim = c(0,80), xpd = TRUE, 
+        )
+text(bp, 0, data6$value,cex=2, pos=3, col ="black") 
+
+
+
+library(RColorBrewer)
+
+coul <- brewer.pal(9, "Greys") 
+
+
+ my_bar <- barplot(height = data6$value,
+        names.arg = data6$name,
+        xlab = "Patient characteristics",
+        ylab = "Mean value",
+        col = coul, 
+        ylim = NULL, xpd = TRUE)
+
+
+ 
+ ####################### Complex heatmap ##################
+ 
+ library(readxl)
+ Heatmap_Final_April_ <- read_excel("Desktop/iNPH Radio New/Tables/Heatmap Final April .xlsx")
+ View(Heatmap_Final_April_)
+ 
+ # transform into matrix
+ HeatmapCool3 <- data.matrix(Heatmap2)
+ 
+ #replace NA by 0
+ is.na(HeatmapCool3) <- sapply(HeatmapCool3, is.infinite)
+ HeatmapCool3[is.na(HeatmapCool3)] <- 100
+ 
+ 
+ rownames(HeatmapCool3) <- c("Agerskov et al. (2019)",
+                             "Agerskov et al. (2020)",
+                             "Aoki et al. (2020)",
+                             "Chen et al. (2008)",
+                             "Garcia-Armengol et al. (2016)",
+                             "Grahnke et al. (2018)",
+                             "Hong et al. (2018)",
+                             "Ishii et al. (2011)",
+                             "Jurcoane et al. (2013)",
+                             "Kawaguchi et al. (2011)",
+                             "Kazui et al. (2013)",
+                             "Kuchcinski et al. (2019)",
+                             "Mantovani et al. (2021) ",
+                             "McGirt et al. (2005)",
+                             "Murakami et al. (2007)",
+                             "Narita et al. (2016)",
+                             "Palm et al. (2006)",
+                             "PM Black (1980)",
+                             "Poca et al. (2002)",
+                             "Poca et at. (2004)",
+                             "Shinoda et al. (2017)",
+                             "Stecco et al. (2020)",
+                             "Virhammar et al. (2014) CA",
+                             "Virhammar et al. (2014)",
+                             "Wu et al. (2021)",
+                             "Yamada et al. (2013)",
+                             "Yamamoto et al. (2013)",
+                             "Ziegelitz et al. (2014)")
+ 
+ 
+ 
+ print(HeatmapCool3)
+ 
+ 
+ 
+ 
+ 
+ 
+ #print heatmap: THE MAGIC
+ heatmap(HeatmapCool3,
+         col = heat.colors(10000),
+         scale = "column",
+         margins = c(6,6)
+ )
+ 
+ legend(x=0.98, y=0.07, bty = "n", cex = 0.6,
+        border = "white", legend=c("min", "min-med","med/NA", "med-max", "max"),fill=heat.colors(5))
+ 
+ 
+ ################ impute missing data: MICE ######################
+ 
+ install.packages("mice")
+ install.packages("devtools")
+ devtools::install_github(repo = "amices/mice")
+ library("mice")
+ library("devtools")
+ library("usethis")
+ #load cleaned dataset with atleast 4+ studies covering the variable
+ 
+ library(readxl)
+ Heatmap_3 <- read.csv("Desktop/iNPH Radio New/Relevant stuff/Tables/Qualitative graphs/Heatmap3NEW.csv")
+ 
+ Heatmap_3_DF <- as.data.frame(Heatmap_3)
+ 
+ imputed_Heatmap_3 <- mice(Heatmap_3)
+ 
+ summary(imputed_Heatmap_3)
+ 
+ final_imp_HP <- complete(imputed_Heatmap_3, 5)
+ 
+ final_imp_HP
+ 
+ #problem: mice cannot predict perfectly colinear variables (super sparse data), so need to find and remove those columns
+ 
+ mice:::find.collinear(Heatmap_3)
+ 
+ complete(imputed_Heatmap_3)
+ 
+ imputed_Heatmap_3$imp$C
+ 
+ 
+ #try again with new clean dataset
+ library(readxl)
+ Heatmap_3_Cleaned <- read_excel("Desktop/iNPH Radio New/Relevant stuff/Tables/Qualitative graphs/Heatmap Cleaned Noncolinear.xlsx")
+
+ mice:::find.collinear(Heatmap_3_Cleaned)
+ 
+ complete(imputed_Heatmap_3_Cleaned)
+ 
+ imputed_Heatmap_3_Cleaned$imp$C
+ 
+ Heatmap_3_DF <- as.data.frame(Heatmap_3_Cleaned)
+ 
+ imputed_Heatmap_4 <- mice(Heatmap_3_Cleaned_DF)
+ 
+ summary(imputed_Heatmap_4)
+ 
+ final_imp_HP_June <- complete(imputed_Heatmap_4, 5)
+ 
+ final_imp_HP_June
+ 
+imputed_HP_matrix <- as.matrix(final_imp_HP_June) 
+ 
+write.csv(imputed_Heatmap_matrix, file = "imputedheatmapjune.csv")
+
+#import imputed heatmap 
+
+imputedheatmap <- read_excel("Desktop/iNPH Radio New/Tables/Qualitative graphs/imputedheatmap.xlsx")
+
+
+#prep heatmap with imputed data by turning it into DF
+
+# transform into matrix
+ImputedHeatmapDF <- data.matrix(imputedheatmap)
+
+
+
+rownames(ImputedHeatmapDF) <- c("Agerskov et al. (2019)",
+                            "Agerskov et al. (2020)",
+                            "Aoki et al. (2020)",
+                            "Chen et al. (2008)",
+                            "Garcia-Armengol et al. (2016)",
+                            "Grahnke et al. (2018)",
+                            "Hong et al. (2018)",
+                            "Ishii et al. (2011)",
+                            "Jurcoane et al. (2013)",
+                            "Kawaguchi et al. (2011)",
+                            "Kazui et al. (2013)",
+                            "Kuchcinski et al. (2019)",
+                            "Mantovani et al. (2021) ",
+                            "McGirt et al. (2005)",
+                            "Murakami et al. (2007)",
+                            "Narita et al. (2016)",
+                            "Palm et al. (2006)",
+                            "PM Black (1980)",
+                            "Poca et al. (2002)",
+                            "Poca et at. (2004)",
+                            "Shinoda et al. (2017)",
+                            "Stecco et al. (2020)",
+                            "Virhammar et al. (2014) CA",
+                            "Virhammar et al. (2014)",
+                            "Wu et al. (2021)",
+                            "Yamada et al. (2013)",
+                            "Yamamoto et al. (2013)",
+                            "Ziegelitz et al. (2014)")
+
+
+
+#print heatmap: THE MAGIC
+heatmap(ImputedHeatmapDF,
+        col = cm.colors(1000000),
+        scale = "column",
+        margins = c(5,5)
+)
+
+legend(x=0.95, y=0.099, bty = "n", cex = 0.6,
+       border = "black", legend=c("min", "min-med","med", "med-max", "max"),fill=cm.colors(5))
+
+
+
+######### sensitivity analysis ############
+
+
+
+# Load Total set dataset from dmetar (or download and open manually)
+
+library(readxl)
+iNPH_Radio_Sens <- read_excel("Desktop/iNPH Radio New/Tables/iNPH Total for Sensitivity Analysis.xlsx")
+
+
+# Use metcont to pool results.
+
+meta_Total_Radio <- metagen(iNPH_Radio_Sens$TE,
+        iNPH_Radio_Sens$seTE,
+        data = iNPH_Radio_Sens,
+         subset = NULL,
+         exclude = NULL,
+         id = NULL,
+         sm = "",
+         level = gs("level"),
+         level.ma = gs("level.ma"),
+         fixed = gs("fixed"),
+         hakn = gs("hakn"),
+         adhoc.hakn = gs("adhoc.hakn"),
+         method.tau = gs("method.tau"),
+         method.tau.ci = gs("method.tau.ci"),
+         tau.preset = NULL,
+         TE.tau = NULL,
+         tau.common = gs("tau.common"),
+         detail.tau = "",
+         prediction = gs("prediction"),
+         level.predict = gs("level.predict"),
+         null.effect = 0,
+         method.bias = gs("method.bias"),
+         n.e = NULL,
+         n.c = NULL,
+         iNPH_Radio_Sens$pval,
+         level.ci = 0.95,
+         method.mean = "Luo",
+         method.sd = "Shi",
+         backtransf = gs("backtransf"),
+         pscale = 1,
+         irscale = 1,
+         irunit = "person-years",
+         text.fixed = gs("text.fixed"),
+         text.random = gs("text.random"),
+         text.predict = gs("text.predict"),
+         text.w.fixed = gs("text.w.fixed"),
+         text.w.random = gs("text.w.random"),
+         title = gs("title"),
+         complab = gs("complab"),
+         outclab = "",
+         label.e = gs("label.e"),
+         label.c = gs("label.c"),
+         label.left = gs("label.left"),
+         label.right = gs("label.right")
+)
+
+#numerical visualisation of meta_ttau (note that SR are the experimental group so reference group, so minus result means it is less in them)
+
+print(meta_Total_Radio)
+
+#make the plot
+
+forest.meta(meta_Total_Radio, 
+            sortvar = TE,
+            predict = TRUE,
+            lab.e = "",
+            lab.c = "",
+            JAMA.pval = FALSE,
+            test.overall.random = TRUE,
+            label.test.overall.random = "Overall statistical result of model: ")
+
+
+
+#Eggers (Publication bias) calculation
+
+eggersplot <- metabias(
+  meta_Total_Radio,
+  method.bias = meta_Total_Radio$method.bias,
+  plotit = TRUE,
+  correct = FALSE,
+  k.min = 1 
+)
+
+print(eggersplot)
+
+print(eggersplot,
+      digits = gs("digits"),
+      digits.stat = gs("digits.stat"),
+      digits.pval = max(gs("digits.pval"), 2),
+      digits.se = gs("digits.se"),
+      digits.tau2 = gs("digits.tau2"),
+      scientific.pval = gs("scientific.pval"),
+      big.mark = gs("big.mark"),
+      zero.pval = gs("zero.pval"),
+      JAMA.pval = gs("JAMA.pval"),
+      text.tau2 = gs("text.tau2"))
+
+
+
+
+#Eggers (Publication bias) plot
+
+
+eggersplot2 <-metabias(
+  meta_Total_Radio,
+  method.bias = meta_Total_Radio$method.bias,
+  plotit = TRUE,
+  correct = FALSE,
+  k.min = 1
+)
+
+funnel.meta(meta_Total_Radio,
+            xlim = c(-100, 100),
+            studlab = FALSE,
+            method.bias = "linreg")
+
+################ correlation plot ##############
+
+library(readxl)
+Correlation_table <- read_excel("Desktop/iNPH Radio New/nonimputedheatmap.xlsx")
+
+install.packages("corrplot")
+library("corrplot")
+
+CorRadio <- cor(Correlation_table, use="pairwise.complete.obs")
+
+#option 1
+testRes = cor.mtest(Correlation_table, conf.level = 0.95)
+
+corrplot(CorRadio, p.mat = testRes$p, method = 'circle', type = 'lower', insig='blank',
+         addCoef.col ='black', number.cex = 0.7, order = 'AOE', diag=FALSE)
+
+#option 2
+corrplot(CorRadio, p.mat = testRes$p, method = 'color', diag = FALSE, type = 'upper',
+         sig.level = c(0.001, 0.01, 0.05), pch.cex = 0.9, number.cex = 0.7, tl.col="black",
+         insig = 'label_sig', pch.col = 'grey20', order = 'AOE', col = COL2('RdYlBu'))
+
+#option 2
+CorRadio <- cor(CorRadio, use="pairwise.complete.obs")
+
+corrplot(CorRadio2, p.mat = testRes$p, method = 'color', diag = FALSE, type = 'upper',
+         sig.level = c(0.001, 0.01, 0.05), pch.cex = 0.9, number.cex = 0.7, tl.col="black",
+         insig = 'label_sig', pch.col = 'grey20', order = 'AOE', col = COL2('RdYlBu'))
+
+install.packages("PerformanceAnalytics")
+library(PerformanceAnalytics)
+
+install.packages("psych")
+library(psych)
+
+corpl(CorRadio$Age, CorRadio$EI)
+
+pairs.panels(CorRadio,
+             smooth = TRUE,      # If TRUE, draws loess smooths
+             scale = FALSE,      # If TRUE, scales the correlation text font
+             density = TRUE,     # If TRUE, adds density plots and histograms
+             ellipses = TRUE,    # If TRUE, draws ellipses
+             method = "pearson", # Correlation method (also "spearman" or "kendall")
+             pch = 21,           # pch symbol
+             lm = FALSE,         # If TRUE, plots linear fit rather than the LOESS (smoothed) fit
+             cor = TRUE,         # If TRUE, reports correlations
+             jiggle = FALSE,     # If TRUE, data points are jittered
+             factor = 2,         # Jittering factor
+             hist.col = 4,       # Histograms color
+             stars = TRUE,       # If TRUE, adds significance level with stars
+             ci = TRUE)          # If TRUE, adds confidence intervals
+
+install.packages("car")
+library(car)
+scatterplotMatrix(~ Sample + Age + Females + DM + HTN + Gaitdef + Cognitiondef + Urinedef + MMSE + EI + CA + SR + Complic, data = CorRadio,
+                  diagonal = FALSE,             # Remove kernel density estimates
+                  regLine = list(col = "green", # Linear regression line color
+                                 lwd = 3),      # Linear regression line width
+                  smooth = list(col.smooth = "red",   # Non-parametric mean color
+                                col.spread = "blue",
+                                legend.plot = TRUE)) # Non-parametric variance color
+
